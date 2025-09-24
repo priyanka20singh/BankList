@@ -42,7 +42,6 @@ namespace BankList.Controllers
                 return NotFound(new { message = "IFSC code not found." });
 
             // Return only BankName and BranchName
-
             //var result = new
             //{
             //    bank.BANK_NAME,
