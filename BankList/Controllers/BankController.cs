@@ -1,13 +1,14 @@
 ﻿using System.Globalization;
-using System.Text.Json;
-using BankList.Helpers;
-using BankList.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.Elfie.Serialization;
 using System.IO;
 using System.Linq;
+using System.Text.Json;
+using System.Text.RegularExpressions;
+using BankList.Helpers;
+using BankList.Models;
 using CsvHelper;
 using CsvHelper.Configuration;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.Elfie.Serialization;
 
 //using System.Globalization;
 //using CsvHelper.Configuration;
@@ -86,7 +87,7 @@ namespace BankList.Controllers
 
             if (!System.IO.File.Exists(path))
                 return NotFound(new { message = "CSV file not found." });
-          
+
             var config = new CsvConfiguration(CultureInfo.InvariantCulture)
             {
                 HasHeaderRecord = true,
@@ -110,8 +111,6 @@ namespace BankList.Controllers
 
             return NotFound(new { message = "IFSC code not found." });
         }
-
-
 
 
 
