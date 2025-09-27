@@ -33,5 +33,11 @@ namespace BankList.Models
 
         [JsonPropertyName("STATUS")]
         public string STATUS { get; set; }
-    }
+
+
+    
+
+
+
+}
 }

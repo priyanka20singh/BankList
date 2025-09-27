@@ -95,22 +95,27 @@ namespace BankList.Controllers
                 TrimOptions = TrimOptions.Trim
             };
 
-            // Stream the CSV to avoid loading the entire file into memory
             using (var reader = new StreamReader(path))
             using (var csv = new CsvHelper.CsvReader(reader, config))
             {
-                while (csv.Read())
+                var records = csv.GetRecords<dynamic>();
+
+                foreach (var record in records)
                 {
-                    var bank = csv.GetRecord<BankDetail>();
-                    if (bank.IFSC_CODE.Equals(ifsc, StringComparison.OrdinalIgnoreCase))
+                    // dynamic record ko dictionary jaisa treat karenge
+                    var dict = (IDictionary<string, object>)record;
+
+                    if (dict.ContainsKey("IFSC_CODE") &&
+                        dict["IFSC_CODE"]?.ToString().Equals(ifsc, StringComparison.OrdinalIgnoreCase) == true)
                     {
-                        return Ok(bank); // Return JSON as soon as IFSC is found
+                        return Ok(dict); // JSON return hoga
                     }
                 }
             }
 
             return NotFound(new { message = "IFSC code not found." });
         }
+
 
 
 

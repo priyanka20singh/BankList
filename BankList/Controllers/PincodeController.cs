@@ -106,39 +106,41 @@ namespace BankList.Controllers
 
 
 
-        private readonly string apiKey = "YOUR_GOOGLE_API_KEY"; // apna key yaha daalo
-        // GET: api/GoogleBank/Search?bankName=HDFC&pinCode=411030
-        [HttpGet("Search")]
-        public async Task<IActionResult> SearchBank(string bankName, string pinCode)
-        {
-            if (string.IsNullOrWhiteSpace(bankName) || string.IsNullOrWhiteSpace(pinCode))
-                return BadRequest(new { message = "Please provide both bank name and pincode." });
+        //private readonly string apiKey = "AIzaSyA9wOiyHkcc22LW7UV1iDTe7bxkPHyFGIY"; // apna key yaha daalo
+        //// GET: api/GoogleBank/Search?bankName=HDFC&pinCode=411030
+        //[HttpGet("Search")]
+        //public async Task<IActionResult> SearchBank(string bankName, string pinCode)
+        //{
+        //    if (string.IsNullOrWhiteSpace(bankName) || string.IsNullOrWhiteSpace(pinCode))
+        //        return BadRequest(new { message = "Please provide both bank name and pincode." });
 
-            string query = $"{bankName} bank {pinCode}";
-            string url = $"https://maps.googleapis.com/maps/api/place/textsearch/json?query={query}&key={apiKey}";
+        //    string query = $"{bankName} bank {pinCode}";
+        //    string url = $"https://maps.googleapis.com/maps/api/place/textsearch/json?query={query}&key={apiKey}";
 
-            using (var client = new HttpClient())
-            {
-                var response = await client.GetStringAsync(url);
-                var json = JsonDocument.Parse(response);
+        //    using (var client = new HttpClient())
+        //    {
+        //        var response = await client.GetStringAsync(url);
+        //        var json = JsonDocument.Parse(response);
 
-                var results = json.RootElement.GetProperty("results");
+        //        var results = json.RootElement.GetProperty("results");
 
-                if (results.GetArrayLength() == 0)
-                    return NotFound(new { message = $"No banks found for {bankName} in {pinCode}" });
+        //        if (results.GetArrayLength() == 0)
+        //            return NotFound(new { message = $"No banks found for {bankName} in {pinCode}" });
 
-                var banks = results.EnumerateArray().Select(place => new
-                {
-                    BANK_NAME = place.GetProperty("name").GetString(),
-                    ADDRESS = place.GetProperty("formatted_address").GetString(),
-                    PLACE_ID = place.TryGetProperty("place_id", out var placeId) ? placeId.GetString() : null,
-                    LAT = place.GetProperty("geometry").GetProperty("location").GetProperty("lat").GetDouble(),
-                    LNG = place.GetProperty("geometry").GetProperty("location").GetProperty("lng").GetDouble()
-                }).ToList();
+        //        var banks = results.EnumerateArray().Select(place => new
+        //        {
+        //            BANK_NAME = place.GetProperty("name").GetString(),
+        //            ADDRESS = place.GetProperty("formatted_address").GetString(),
+        //            PLACE_ID = place.TryGetProperty("place_id", out var placeId) ? placeId.GetString() : null,
+        //            LAT = place.GetProperty("geometry").GetProperty("location").GetProperty("lat").GetDouble(),
+        //            LNG = place.GetProperty("geometry").GetProperty("location").GetProperty("lng").GetDouble()
+        //        }).ToList();
 
-                return Ok(banks);
-            }
-        }
+        //        return Ok(banks);
+        //    }
+        //}
+
+
 
 
 
